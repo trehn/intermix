@@ -120,6 +120,7 @@ class UI(object):
         self.url = "http://{host}:{port}/".format(host=host, port=port)
 
         self.state = state
+        self._running = True
 
         self.app = web.Application()
         self.app.router.add_route('GET', "/", self._html_client)
@@ -150,7 +151,7 @@ class UI(object):
         ws = web.WebSocketResponse()
         ws.start(request)
         client = Client(ws, self.layers)
-        while True:
+        while self._running:
             start = time()
             msg = yield from ws.receive()
             if msg.tp in (MsgType.close, MsgType.error):
@@ -166,3 +167,7 @@ class UI(object):
 
     def draw(self, output):
         pass
+
+    def stop(self):
+        self._running = False
+        self.loop.stop()
