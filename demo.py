@@ -1,7 +1,7 @@
 import sys
 from time import sleep
 
-from intermix import UI
+from intermix.ui import UI
 
 
 class MyUI(UI):

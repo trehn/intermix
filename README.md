@@ -8,7 +8,7 @@ Usage
 -----
 
 ```python
-from intermix import UI
+from intermix.ui import UI
 
 
 class MyUI(UI):

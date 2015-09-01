@@ -1,7 +1,4 @@
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import find_packages, setup
 
 
 setup(
@@ -29,8 +26,11 @@ setup(
         "aiohttp >= 0.17.3",
         "mako >=  1.0.2",
     ],
-    py_modules=['intermix'],
-    data_files=[
-        (".", "intermix_client.html"),
-    ],
+    packages=find_packages(),
+    package_data={
+        "intermix": [
+            "client.html",
+        ],
+    },
+    include_package_data=True,
 )
