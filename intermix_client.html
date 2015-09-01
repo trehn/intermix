@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        html, body { width: 100%; height: 100%; margin: 0px; border: 0; overflow: hidden;  display: block; }
+        canvas { position: absolute; left: 0px; top: 0px; }
+    </style>
+    <title>${title}</title>
+</head>
+<body>
+% for layer in range(layers):
+    <canvas id='canvas${layer}'></canvas>
+% endfor
+    <script>
+        (function() {
+            var layers = [
+% for layer in range(layers):
+                document.getElementById('canvas${layer}'),
+% endfor
+            ];
+            var ctx_2d = [
+% for layer in range(layers):
+                layers[${layer}].getContext("2d"),
+% endfor
+            ];
+            window.addEventListener('load', websocket_init, false);
+            window.addEventListener('resize', resize, false);
+            resize();
+            function websocket_init() {
+                websocket = new WebSocket("ws://127.0.0.1:${port}/ws");
+                websocket.onclose = function(evt) { alert("Connection closed."); };
+                websocket.onerror = function(evt) { alert("Connection failed."); };
+                websocket.onopen = function(evt) { send_info(); };
+                websocket.onmessage = function(evt) { console.log(evt.data); eval(evt.data); };
+            }
+            function send_info() {
+                websocket.send(JSON.stringify({
+                    'height': layers[0].height,
+                    'width': layers[0].width,
+                }));
+            }
+            function resize() {
+                layers.map(function (canvas) {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
