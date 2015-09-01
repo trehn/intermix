@@ -31,7 +31,7 @@
                 websocket.onclose = function(evt) { alert("Connection closed."); };
                 websocket.onerror = function(evt) { alert("Connection failed."); };
                 websocket.onopen = function(evt) { send_info(); };
-                websocket.onmessage = function(evt) { console.log(evt.data); eval(evt.data); };
+                websocket.onmessage = function(evt) { eval(evt.data); };
             }
             function send_info() {
                 websocket.send(JSON.stringify({
