@@ -25,5 +25,6 @@ class MyUI(UI):
 http://127.0.0.1:8080
 >>> ui.state['text'] = "updated live"
 >>>
+```
 
 See `demo.py` for a more comprehensive example.
